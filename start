@@ -1,0 +1,5 @@
+#! /bin/bash
+feh --bg-scale /home/agnom/wallpapers/wallpaper3.jpg
+compton -f &
+xsetroot -name "Thinkpad X201"
+exec dwm
