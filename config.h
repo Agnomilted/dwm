@@ -65,19 +65,20 @@ static const char *termcmd[]  = { "st", NULL };
 static const char *roficmd[]  = { "rofi", "-show", "run", "-config", "/home/agnom/.config/rofi/config" };
 static const char *openhelp[] = { "libreoffice", "/home/agnom/src/dwm/Help.odt", NULL };
 static const char *screenshot[] = { "import", "-window", "root", "/home/agnom/screenshot.png" };
+static const char *poweroff[]   = { "poweroff", NULL };
 
 static Key keys[] = {
 	/* modifier                     key        function        argument */
 	{ MODKEY,                       XK_d,      spawn,          {.v = dmenucmd } },
 	{ MODKEY,                       XK_Return, spawn,          {.v = termcmd } },
 	{ MODKEY,                       XK_b,      togglebar,      {0} },
-	{ MODKEY,                       XK_Right,  focusstack,     {.i = +1 } },
-	{ MODKEY,                       XK_Left,   focusstack,     {.i = -1 } },
-	{ MODKEY,                       XK_Up,     incnmaster,     {.i = +1 } },
-	{ MODKEY,                       XK_Down,   incnmaster,     {.i = -1 } },
-	{ MODKEY,                       XK_h,      setmfact,       {.f = -0.05} },
-	{ MODKEY,                       XK_l,      setmfact,       {.f = +0.05} },
-	{ MODKEY|ShiftMask,             XK_Left,   zoom,           {0} },
+	{ MODKEY,                       XK_l,      focusstack,     {.i = +1 } },
+	{ MODKEY,                       XK_h,      focusstack,     {.i = -1 } },
+	{ MODKEY,                       XK_k,      incnmaster,     {.i = +1 } },
+	{ MODKEY,                       XK_j,      incnmaster,     {.i = -1 } },
+	{ MODKEY|ShiftMask,             XK_h,      setmfact,       {.f = -0.05} },
+	{ MODKEY|ShiftMask,             XK_l,      setmfact,       {.f = +0.05} },
+	{ MODKEY|ShiftMask,             XK_k,      zoom,           {0} },
 	{ MODKEY,                       XK_Tab,    view,           {0} },
 	{ MODKEY|ShiftMask,             XK_c,      killclient,     {0} },
 	{ MODKEY,                       XK_t,      setlayout,      {.v = &layouts[0]} },
@@ -95,11 +96,11 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_comma,  tagmon,         {.i = -1 } },
 	{ MODKEY|ShiftMask,             XK_period, tagmon,         {.i = +1 } },
 	{ MODKEY,                       XK_z,      spawn,          {.v = roficmd } },
-	{ MODKEY,                       XK_minus,  setgaps,        {.i = -1 } },
-	{ MODKEY,                       XK_equal,  setgaps,        {.i = +1 } },
-	{ MODKEY|ShiftMask,             XK_equal,  setgaps,        {.i = 0  } },
-	{ MODKEY|ShiftMask,             XK_h,      spawn,          {.v = openhelp } },
-        { MODKEY|ShiftMask,             XK_p,  spawn,          {.v = screenshot } },	
+	{ MODKEY,                       XK_minus,  setgaps,        {.i = -5 } },
+	{ MODKEY,                       XK_equal,  setgaps,        {.i = +5 } },
+	{ MODKEY|ShiftMask,             XK_equal,  setgaps,        {.i = 10  } },
+//      { MODKEY|ShiftMask,             XK_p,  spawn,          {.v = screenshot } },	
+        { MODKEY|ShiftMask,             XK_Escape, spawn,          {.v = poweroff } },
 	TAGKEYS(                        XK_1,                      0)
 	TAGKEYS(                        XK_2,                      1)
 	TAGKEYS(                        XK_3,                      2)
