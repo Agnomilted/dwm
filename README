@@ -29,3 +29,5 @@ Configuration:
 	C or C++ or if you have previous experience with configuring window managers. One thing you should not forget is that you should recompile the source
 	code after changing the config file as it isn't read at runtime like other window managers.
 
+Errors(that I know of):
+	Because of the modification that I made to dwm.c setting (*selmon).mfact to 0.5f, this build will only work as intended in systems with only one monitor
