@@ -28,4 +28,8 @@ Configuration:
 	the window manager may seem too hard, but it really isn't. It may be harder than the average config file but it will be much easier if you learn some 
 	C or C++ or if you have previous experience with configuring window managers. One thing you should not forget is that you should recompile the source
 	code after changing the config file as it isn't read at runtime like other window managers.
+	
+	
+Errors(that i know of):
+	Because of the modification that i made to main in dwm.c, this build will only work in systems with one monitor.
 
