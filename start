@@ -1,6 +1,6 @@
 #! /bin/bash
 lxsession -a &
 ~/.fehbg
-compton -f &
+compton -f -i 0.9 &
 xsetroot -name "Thinkpad X201"
 exec dwm

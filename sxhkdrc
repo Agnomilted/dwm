@@ -1,0 +1,21 @@
+super + Return  #terminal
+	st
+super + d	#run dmenu
+	dmenu_run -b -fn "xft:Noto Sans:size=10" -nb #2f2f2f -nf #bbbbbb -sb #444444 -sf #bbbbbb
+super + shift + f	#run firefox
+	firefox
+super + shift + print #screenshot
+	scrot
+super + shift + escape #lock screen
+	slock
+super + shift + up #increase volume by 10%
+	amixer sset Master unmute
+	amixer sset Master 10%+
+super + shift + down #decrease volume by 10%
+	amixer sset Master 10%-
+super + shift + t #run tor
+	tor
+super + r #run ranger, the file manager
+	st -e ranger ~
+super + shift + v #set volume
+	setvolume

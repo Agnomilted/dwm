@@ -2156,6 +2156,9 @@ main(int argc, char *argv[])
 	if (pledge("stdio rpath proc exec", NULL) == -1)
 		die("pledge");
 #endif /* __OpenBSD__ */
+
+	selmon->mfact = 0.5f; //a botched solution to a problem of mine
+
 	scan();
 	run();
 	cleanup();
