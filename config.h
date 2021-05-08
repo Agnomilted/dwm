@@ -2,7 +2,7 @@
 
 /* appearance */
 static const unsigned int borderpx  = 1;        /* border pixel of windows */
-static const unsigned int gappx     = 5;       /* gaps between windows */
+static const unsigned int gappx     = 10;       /* gaps between windows */
 static const unsigned int snap      = 32;       /* snap pixel */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
@@ -113,6 +113,7 @@ static Key keys[] = {
 	{ MODKEY,             	        XK_r,      spawn,          {.v = ranger } },
 	{ MODKEY|ShiftMask,             XK_f,      spawn,          {.v = firefox } },
 	
+	{ MODKEY,                       XK_q,      spawn,          {.v = termcmd } },
 	TAGKEYS(                        XK_1,                      0)
 	TAGKEYS(                        XK_2,                      1)
 	TAGKEYS(                        XK_3,                      2)
