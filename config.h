@@ -23,7 +23,9 @@ static const char *colors[][3]      = {
 };
 
 /* tagging */
-static const char *tags[] = { "Main", "Firefox", "3", "4", "5" }; //{ "1", "2", "3", "4", "5", "6", "7", "8", "9" };
+//static const char *tags[] = { "Main", "Firefox", "3", "4", "5" }; //{ "1", "2", "3", "4", "5", "6", "7", "8", "9" };
+static const char *tags[] = { "Main", "Sussy", "3", "4", "5" }; //{ "1", "2", "3", "4", "5", "6", "7", "8", "9" };
+
 
 static const Rule rules[] = {
 	/* xprop(1):
@@ -32,12 +34,13 @@ static const Rule rules[] = {
 	 */
 	/* class      instance    title       tags mask     isfloating   monitor */
 	{ "Firefox",  NULL,       NULL,       2,            0,           -1 },
+	{ "krita",    NULL,       NULL,       NULL,         1,           -1 },
 
 //	{ "Tor Browser",  NULL,   NULL,       2,            1,           -1 },
 };
 
 /* layout(s) */
-static const float mfact     = 0.55; /* factor of master area size [0.05..0.95] */
+static const float mfact     = 0.5; /* factor of master area size [0.05..0.95] */
 static const int nmaster     = 1;    /* number of clients in master area */
 static const int resizehints = 1;    /* 1 means respect size hints in tiled resizals */
 
@@ -75,6 +78,53 @@ static const char* tor[]       = { "/home/agnom/.tor", NULL };
 static const char* setvolume[] = {"setvolume", NULL};
 static const char* ranger[] = {"st", "-e", "ranger", "/home/agnom", NULL };
 
+/*static const char* tmp[]={"herbe", "raise", NULL};
+static const char* tmp2[]={"herbe", "lower", NULL};*/
+
+void
+sus_getvolume()
+{
+	system("herbe \"$(amixer | grep 'Playback.*\\%' | sed 's/^.*[1234567890] \/\/')\" &");
+}
+static void
+sus_raisevolume()
+{
+	const char* tmp = "amixer sset Master unmute 10%+";
+	system(tmp);
+	sus_getvolume();
+//	spawn({.v = incvolume});
+}
+static void
+sus_lowervolume()
+{
+	const char* tmp = "amixer sset Master unmute 10%-";
+	sus_getvolume();
+	system(tmp);
+//	spawn({.v = decvolume});
+}
+static void
+sus_mute()
+{
+	const char* tmp = "amixer sset Master mute";
+	system(tmp);
+	sus_getvolume();
+	
+}
+static void
+sus_exit()
+{
+	FILE* sus = popen("echo 'yes\nno' | dmenu -p \"Are you sure you want to exit?:\"", "r");
+	char amogus[16];
+	fscanf(sus, "%s", amogus);
+	fclose(sus);
+	if(!strcmp(amogus, "yes")){
+		quit(NULL);
+	}
+	else if(!strcmp(amogus, "no")){
+		return;
+	}
+}
+
 static Key keys[] = {
 	/* modifier                     key        function        argument */
 	{ MODKEY,                       XK_d,      spawn,          {.v = dmenucmd } },
@@ -107,8 +157,11 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_equal,  setgaps,        {.i = 10  } },
         { MODKEY|ShiftMask,             XK_Print,  spawn,          {.v = screenshot } },	
 	{ MODKEY|ShiftMask,		XK_Escape, spawn,          {.v = lock } },
-	{ MODKEY|ShiftMask,		XK_Up,     spawn,          {.v = incvolume } },
-	{ MODKEY|ShiftMask,		XK_Down,   spawn,          {.v = decvolume } },
+	{ MODKEY|ShiftMask,		XK_Up,     sus_raisevolume, {0} },
+	{ MODKEY|ShiftMask,		XK_Down,   sus_lowervolume, {0} },
+	{ 0,				0x1008ff13, sus_raisevolume, {0}}, /*raise volume*/
+	{ 0,				0x1008ff11, sus_lowervolume, {0}}, /*lower volume*/
+	{ 0,				0x1008ff12, sus_mute,        {0}},
 	{ MODKEY|ShiftMask,             XK_t,      spawn,          {.v = tor } },
 	{ MODKEY,             	        XK_r,      spawn,          {.v = ranger } },
 	{ MODKEY|ShiftMask,             XK_f,      spawn,          {.v = firefox } },
@@ -123,7 +176,9 @@ static Key keys[] = {
 	TAGKEYS(                        XK_7,                      6)
 	TAGKEYS(                        XK_8,                      7)
 	TAGKEYS(                        XK_9,                      8)
-	{ MODKEY|ShiftMask,             XK_q,      quit,           {0} },
+	{ MODKEY|ShiftMask,		XK_v,      spawn,          {.v = setvolume} },
+//	{ MODKEY|ShiftMask,             XK_q,      quit,           {0} },
+	{ MODKEY|ShiftMask,             XK_q,      sus_exit,       {0} },
 };
 
 /* button definitions */

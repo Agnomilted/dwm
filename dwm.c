@@ -2157,7 +2157,7 @@ main(int argc, char *argv[])
 		die("pledge");
 #endif /* __OpenBSD__ */
 
-	selmon->mfact = 0.5f; //a botched solution to a problem of mine
+	//selmon->mfact = 0.5f; //a botched solution to a problem of mine
 
 	scan();
 	run();
