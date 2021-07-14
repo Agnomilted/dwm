@@ -12,19 +12,19 @@ static const char col_gray1[]       = "#2f2f2f"; //"#222222";
 static const char col_gray2[]       = "#444444";
 static const char col_gray3[]       = "#bbbbbb";
 static const char col_gray4[]       = "#eeeeee";
-static const char white[] = "#ebdbb2";
+static const char white[] = "#ffffff";
+static const char light_gray[] = "#ebdbb2";
 static const char bg0[] = "#2f2f2f";
 static const char bg1[] = "#504945";
 static const char bg2[] = "#7c6f64";
 static const char *colors[][3]      = {
 	/*               fg         bg         border   */
-	[SchemeNorm] = { white, bg0, bg0 },
-	[SchemeSel]  = { white, bg1,  bg1  },
+	[SchemeNorm] = { light_gray, bg0, bg0 },
+	[SchemeSel]  = { light_gray, bg1,  bg1  },
 };
 
 /* tagging */
-//static const char *tags[] = { "Main", "Firefox", "3", "4", "5" }; //{ "1", "2", "3", "4", "5", "6", "7", "8", "9" };
-static const char *tags[] = { "Main", "Sussy", "3", "4", "5" }; //{ "1", "2", "3", "4", "5", "6", "7", "8", "9" };
+static const char *tags[] = { "Main", "Web", "3", "4", "5" }; //{ "1", "2", "3", "4", "5", "6", "7", "8", "9" };
 
 
 static const Rule rules[] = {
@@ -72,16 +72,14 @@ static const char *firefox[]  = { "firefox", NULL };
 static const char *termcmd[]  = { "st", NULL };
 static const char *screenshot[] = { "scrot", NULL };
 static const char *lock[] = { "slock", NULL };
-static const char* incvolume[] = { "amixer", "sset", "'Master'", "10%+", NULL };
-static const char* decvolume[] = { "amixer", "sset", "'Master'", "10%-", NULL };
 static const char* tor[]       = { "/home/agnom/.tor", NULL };
 static const char* setvolume[] = {"setvolume", NULL};
 static const char* ranger[] = {"st", "-e", "ranger", "/home/agnom", NULL };
+static const char* calendar[] = { "gnome-calendar", NULL};
+static const char* rofimenu[] = { "rofi", "-show", "drun", NULL };
 
-/*static const char* tmp[]={"herbe", "raise", NULL};
-static const char* tmp2[]={"herbe", "lower", NULL};*/
 
-void
+static void
 sus_getvolume()
 {
 	system("herbe \"$(amixer | grep 'Playback.*\\%' | sed 's/^.*[1234567890] \/\/')\" &");
@@ -89,39 +87,41 @@ sus_getvolume()
 static void
 sus_raisevolume()
 {
-	const char* tmp = "amixer sset Master unmute 10%+";
-	system(tmp);
+	const char* incvolume = "amixer sset Master unmute 10%+";
+	system(incvolume);
 	sus_getvolume();
-//	spawn({.v = incvolume});
 }
 static void
 sus_lowervolume()
 {
-	const char* tmp = "amixer sset Master unmute 10%-";
+	const char* decvolume = "amixer sset Master unmute 10%-";
 	sus_getvolume();
-	system(tmp);
-//	spawn({.v = decvolume});
+	system(decvolume);
 }
 static void
 sus_mute()
 {
-	const char* tmp = "amixer sset Master mute";
-	system(tmp);
+	const char* mute = "amixer sset Master mute";
+	system(mute);
 	sus_getvolume();
 	
 }
 static void
 sus_exit()
 {
-	FILE* sus = popen("echo 'yes\nno' | dmenu -p \"Are you sure you want to exit?:\"", "r");
-	char amogus[16];
-	fscanf(sus, "%s", amogus);
-	fclose(sus);
-	if(!strcmp(amogus, "yes")){
+	FILE* prompt1 = popen("echo 'logout\npoweroff\nreboot' | rofi -dmenu -p 'Logout, poweroff or reboot?'", "r");
+	char amogus[128];
+	char amogus2[256];
+	fscanf(prompt1, "%s", amogus);
+	fclose(prompt1);
+	if(!strcmp(amogus, "logout")){
 		quit(NULL);
 	}
-	else if(!strcmp(amogus, "no")){
-		return;
+	else if(!strcmp(amogus, "poweroff")){
+		system("rofi -dmenu -password -p 'Please enter your user password' | sudo -S poweroff");
+	}
+	else if(!strcmp(amogus, "reboot")){
+		system("rofi -dmenu -password -p 'Please enter your user password' | sudo -S reboot");
 	}
 }
 
@@ -188,7 +188,8 @@ static Button buttons[] = {
 	{ ClkLtSymbol,          0,              Button1,        setlayout,      {0} },
 	{ ClkLtSymbol,          0,              Button3,        setlayout,      {.v = &layouts[2]} },
 	{ ClkWinTitle,          0,              Button2,        zoom,           {0} },
-	{ ClkStatusText,        0,              Button2,        spawn,          {.v = termcmd } },
+//	{ ClkStatusText,        0,              Button2,        spawn,          {.v = termcmd } },
+	{ ClkStatusText,        0,              Button3,        spawn,          {.v = calendar } },
 	{ ClkClientWin,         MODKEY,         Button1,        movemouse,      {0} },
 	{ ClkClientWin,         MODKEY,         Button2,        togglefloating, {0} },
 	{ ClkClientWin,         MODKEY,         Button3,        resizemouse,    {0} },
@@ -196,5 +197,6 @@ static Button buttons[] = {
 	{ ClkTagBar,            0,              Button3,        toggleview,     {0} },
 	{ ClkTagBar,            MODKEY,         Button1,        tag,            {0} },
 	{ ClkTagBar,            MODKEY,         Button3,        toggletag,      {0} },
+	{ ClkRootWin,		0,		Button3,	spawn,		{.v = rofimenu } },
 };
 
