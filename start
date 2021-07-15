@@ -3,4 +3,5 @@ lxsession -a &
 ~/.fehbg
 compton -f -i 0.95 &
 dwmblocks &
+xrdb ~/.Xresources
 exec dwm
