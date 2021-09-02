@@ -6,8 +6,8 @@ static unsigned int gappx     = 10;       /* gaps between windows */
 static unsigned int snap      = 32;       /* snap pixel */
 static int showbar            = 1;        /* 0 means no bar */
 static int topbar             = 1;        /* 0 means bottom bar */
-static const char *fonts[]          = { "xft:Noto Sans:size=10:antialias=true" }; //{ "monospace:size=10" };
-static const char dmenufont[]       = "xft:Noto Sans:size=10:antialias=true";
+static const char *fonts[]          = { "xft:Noto Sans:size=12:antialias=true:hinting=true" }; //{ "monospace:size=10" };
+static const char dmenufont[]       = "xft:Noto Sans:size=12:antialias=true:hinting=true";
 static char normbgcolor[]           = "#2f2f2f";
 static char normbordercolor[]       = "#2f2f2f";
 static char normfgcolor[]           = "#ebdbb2";
@@ -21,7 +21,7 @@ static char *colors[][3] = {
 };
 
 /* tagging */
-static const char *tags[] = { "Main", "Web", "3", "4", "5" }; //{ "1", "2", "3", "4", "5", "6", "7", "8", "9" };
+static const char *tags[] = { "Main", "Web", "3", "4", "5" };
 
 
 static const Rule rules[] = {
@@ -31,6 +31,7 @@ static const Rule rules[] = {
 	 */
 	/* class      instance    title       tags mask     isfloating   monitor */
 	{ "Firefox",  NULL,       NULL,       2,            0,           -1 },
+	{ "firefox",  NULL,       NULL,       2,            0,           -1 },
 	{ "krita",    NULL,       NULL,       NULL,         1,           -1 },
 
 //	{ "Tor Browser",  NULL,   NULL,       2,            1,           -1 },
@@ -74,32 +75,33 @@ static const char* tor[]       = { "/home/agnom/.tor", NULL };
 static const char* setvolume[] = {"setvolume", NULL};
 static const char* ranger[] = {"st", "-e", "ranger", "/home/agnom", NULL };
 static const char* calendar[] = { "gnome-calendar", NULL};
-static const char* rofimenu[] = { "rofi", "-show", "drun", NULL };
+//static const char* rofimenu[] = { "rofi", "-show", "drun", NULL };
+static const char* xmenu[] = {"/home/agnom/src/xmenu/xmenu.sh", NULL};
 
 
 static void
 sus_getvolume()
 {
-	system("herbe \"$(amixer | grep 'Playback.*\\%' | sed 's/^.*[1234567890] \/\/')\" &");
+	system("herbe \"$(amixer | grep 'Playback.*\\%' | sed 's/^.*[1234567890] \/\/;1q')\" &");
 }
 static void
 sus_raisevolume()
 {
-	const char* incvolume = "amixer sset Master unmute 10%+";
+	const char* incvolume = "amixer sset Master 10%+";
 	system(incvolume);
 	sus_getvolume();
 }
 static void
 sus_lowervolume()
 {
-	const char* decvolume = "amixer sset Master unmute 10%-";
+	const char* decvolume = "amixer sset Master 10%-";
 	sus_getvolume();
 	system(decvolume);
 }
 static void
 sus_mute()
 {
-	const char* mute = "amixer sset Master mute";
+	const char* mute = "amixer sset Master 0% unmute";
 	system(mute);
 	sus_getvolume();
 	
@@ -127,19 +129,20 @@ sus_exit()
  * Xresources preferences to load at startup
  */
 ResourcePref resources[] = {
-               { "normbgcolor",        STRING,  &normbgcolor },
-               { "normbordercolor",    STRING,  &normbordercolor },
-               { "normfgcolor",        STRING,  &normfgcolor },
-               { "selbgcolor",         STRING,  &selbgcolor },
-               { "selbordercolor",     STRING,  &selbordercolor },
-               { "selfgcolor",         STRING,  &selfgcolor },
-               { "borderpx",           INTEGER, &borderpx },
-               { "snap",                       INTEGER, &snap },
-               { "showbar",            INTEGER, &showbar },
-               { "topbar",             INTEGER, &topbar },
-               { "nmaster",            INTEGER, &nmaster },
-               { "resizehints",        INTEGER, &resizehints },
-               { "mfact",                      FLOAT,   &mfact },
+
+	{ "normbgcolor",        STRING,  &normbgcolor },
+	{ "normbordercolor",    STRING,  &normbordercolor },
+	{ "normfgcolor",        STRING,  &normfgcolor },
+	{ "selbgcolor",         STRING,  &selbgcolor },
+	{ "selbordercolor",     STRING,  &selbordercolor },
+	{ "selfgcolor",         STRING,  &selfgcolor },
+	{ "borderpx",           INTEGER, &borderpx },
+	{ "snap",               INTEGER, &snap },
+	{ "showbar",            INTEGER, &showbar },
+	{ "topbar",             INTEGER, &topbar },
+	{ "nmaster",            INTEGER, &nmaster },
+	{ "resizehints",        INTEGER, &resizehints },
+	{ "mfact",              FLOAT,   &mfact },
 };
 
 static Key keys[] = {
@@ -214,6 +217,6 @@ static Button buttons[] = {
 	{ ClkTagBar,            0,              Button3,        toggleview,     {0} },
 	{ ClkTagBar,            MODKEY,         Button1,        tag,            {0} },
 	{ ClkTagBar,            MODKEY,         Button3,        toggletag,      {0} },
-	{ ClkRootWin,		0,		Button3,	spawn,		{.v = rofimenu } },
+	{ ClkRootWin,		0,		Button3,	spawn,		{.v = xmenu } },
 };
 

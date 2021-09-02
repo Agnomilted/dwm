@@ -1,8 +1,8 @@
 #! /bin/bash
-lxsession -a &
+# lxsession -a &
 ~/.fehbg
-compton -f -i 0.95 &
+picom -f -i 0.95 &
 dwmblocks &
-# xrdb ~/.Xresources
-xrdb ~/.cache/wal/colors.Xresources
+xrdb ~/.Xresources
+# xrdb ~/.cache/wal/colors.Xresources
 exec dwm

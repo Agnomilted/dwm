@@ -1,0 +1,5 @@
+[Desktop Entry]
+Name=Dwm
+Comment=Suckless' dynamic window manager
+Exec=/home/agnom/src/dwm/start
+Type=Application
